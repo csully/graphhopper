@@ -31,7 +31,7 @@ public class TrafficScraper{
 	    String inputLine;
 
 	    while ((inputLine = in.readLine()) != null)
-		w.write(inputLine);
+		w.write(inputLine + "\n");
 	    in.close();
 	    
 
