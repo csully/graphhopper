@@ -26,7 +26,7 @@
  * Sources:
  * https://github.com/graphhopper/graphhopper/blob/master/docs/core/low-level-api.md
  */
-
+package com.graphhopper;
 
 import com.graphhopper.GraphHopper;
 import com.graphhopper.reader.DataReader;
@@ -54,10 +54,13 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.graphhopper.MyGraphHopper;
+import com.graphhopper.BlockWeighting;
+
 
 public class TrafficClient{
 
-    public static void answerQuery(GraphHopper g, String outName){
+    public static void answerQuery(MyGraphHopper g, String outName){
 	Scanner input = new Scanner(System.in);
 	System.out.print("Enter the longtitude and latitude of your " + 
 			 "source separated by commas (long,lat): ");
@@ -82,7 +85,8 @@ public class TrafficClient{
 	GraphStorage graph = g.getGraph();
 	FlagEncoder encoder = new CarFlagEncoder();
 
-	QueryResult fromQR = i.findClosest(srclat,srclong, EdgeFilter.All_EDGES);
+	QueryResult fromQR = i.findClosest(srclat,srclong, 
+					   EdgeFilter.All_EDGES);
 	QueryResult toQR = i.findID(destlat,destlong, EdgeFilter.All_EDGES);
 
 	Path path = new Dijkstra(graph,encoder).calcPath(fromQR,toQR);
@@ -125,11 +129,16 @@ public class TrafficClient{
 		lats[i] = Double.parseDouble(coords[0].trim());
 		longs[i] = Double.parseDouble(coords[1].trim());
 	    }
+
 	    LocationIndex i = g.getLocationIndex();
 	    GraphStorage graph = g.getGraph();
 	    
-	    QueryResult fromQR = i.findClosest(lats[0],longs[0], EdgeFilter.All_EDGES);
-	    QueryResult toQR = i.findID(lats[lats.length - 2],longs[longs.length - 2], EdgeFilter.All_EDGES);
+	    QueryResult fromQR = i.findClosest(lats[0],longs[0], 
+					       EdgeFilter.All_EDGES);
+
+	    QueryResult toQR = i.findID(lats[lats.length - 2],
+					longs[longs.length - 2], 
+					EdgeFilter.All_EDGES);
 	    
 	    EdgeIteratorState src = fromQR.getClosestEdge();
 	    EdgeIteratorState dest = toQR.getClosestEdge();
@@ -162,6 +171,7 @@ public class TrafficClient{
 	while(true){
 	    String time = getTime();
 	    GraphHopper g = db.get(time);
-	    answerQuery(db)
+	    answerQuery(db);
 	}
+    }
 }

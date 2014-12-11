@@ -26,7 +26,7 @@
  * Sources:
  * https://github.com/graphhopper/graphhopper/blob/master/docs/core/low-level-api.md
  */
-
+package com.graphhopper;
 
 import com.graphhopper.GraphHopper;
 import com.graphhopper.reader.DataReader;
@@ -62,5 +62,3 @@ public class MyGraphHopper extends GraphHopper{
 	return new BlockingWeighting(encoder);
     }
 }
-}
-

@@ -27,7 +27,7 @@
  * https://github.com/graphhopper/graphhopper/blob/master/docs/core/low-level-api.md
  */
 
-
+package com.graphhopper;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.reader.DataReader;
 import com.graphhopper.reader.OSMReader;
@@ -55,7 +55,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-class BlockingWeighting implements Weighting 
+public class BlockWeighting implements Weighting 
 {
     private final FlagEncoder encoder;
     private Set<Integer> trafficEdges = new Set<Integer>();
@@ -85,6 +85,7 @@ class BlockingWeighting implements Weighting
 	    double speed = speeds.get(edgeState.getEdge());
 	    return edgeState.getDistance() / speed;
 	}
+	return edgeState.getDistance() / this.encoder.getSpeed(edgeState.getFlags());
     }
 
     @Override
